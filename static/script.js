@@ -164,24 +164,4 @@ $(document).ready(function() {
         console.log(`✅ Sorted Marks Column in ${sortAscending ? "Ascending" : "Descending"} Order`);
     });
 
-    // ✅ Add New Row at the Top
-    $("#addRow").click(function() {
-        console.log("➡️ Add New Mark button clicked");
-
-        let newRow = `<tr>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td>
-                <button class="btn btn-success btn-sm add-btn">Add</button>
-                <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-            </td>
-        </tr>`;
-
-        $("#marksTable").prepend(newRow);
-        console.log("✅ New row added to the top of the table!");
-    });
-
 });
