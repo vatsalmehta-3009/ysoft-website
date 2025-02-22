@@ -1,7 +1,27 @@
 $(document).ready(function() {
     console.log("✅ script.js is loaded!");
 
-    // Handle registration form submission (existing code)
+    // Function to show toast messages
+    function showToast(message, type = "success") {
+        let toast = $(`
+            <div class="toast-message ${type}">
+                <span>${message}</span>
+                <button class="close-toast">&times;</button>
+            </div>
+        `);
+        
+        $("#toast-container").append(toast);
+
+        // Auto-close after 5 seconds
+        setTimeout(() => toast.fadeOut(400, function() { $(this).remove(); }), 5000);
+
+        // Close button functionality
+        toast.find(".close-toast").click(function() {
+            toast.fadeOut(400, function() { $(this).remove(); });
+        });
+    }
+
+    // ✅ Handle registration form submission
     $("#register-form").submit(function(event) {
         event.preventDefault();
 
@@ -10,10 +30,11 @@ $(document).ready(function() {
             type: "POST",
             data: $(this).serialize(),
             success: function(response) {
-                window.location.href = "/login";
+                showToast("✅ Registration successful! Redirecting to login...");
+                setTimeout(() => window.location.href = "/login", 2000);
             },
             error: function() {
-                alert("Registration failed. Try again.");
+                showToast("⚠️ Registration failed. Try again.", "error");
             }
         });
     });
@@ -29,19 +50,16 @@ $(document).ready(function() {
             <td contenteditable="true"></td>
             <td contenteditable="true"></td>
             <td>
-                <button class="btn btn-success btn-sm add-btn">Add</button>
-                <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                <button class="custom-btn add-btn">Add</button>
+                <button class="custom-btn delete-btn">Delete</button>
             </td>
         </tr>`;
 
         $("#marksTable").append(newRow);
-        console.log("✅ New row added to table!");
     });
 
     // ✅ Handle "Add" button click inside the new row
     $(document).on("click", ".add-btn", function() {
-        console.log("➡️ Add button clicked inside table row!");
-
         let row = $(this).closest("tr");
         let name = row.find("td:eq(0)").text().trim();
         let subject = row.find("td:eq(1)").text().trim();
@@ -50,35 +68,28 @@ $(document).ready(function() {
         let marks = row.find("td:eq(4)").text().trim();
 
         if (!name || !subject || !year || !sem || !marks) {
-            alert("⚠️ Please fill all fields before adding!");
+            showToast("⚠️ Please fill all fields for adding records!", "error");
             return;
         }
 
-        console.log("📤 Sending AJAX request to /add_mark");
         $.ajax({
             url: "/add_mark",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({ name, subject, year, sem, marks }),
             success: function(response) {
-                console.log("✅ Record added successfully!", response);
                 row.attr("data-id", response.id);
-                row.find(".add-btn").removeClass("add-btn btn-success")
-                                   .addClass("save-btn btn-primary")
-                                   .text("Save");
-                alert("✅ Record added successfully!");
+                row.find(".add-btn").removeClass("add-btn").addClass("save-btn").text("Save");
+                showToast("✅ New record added successfully !");
             },
-            error: function(xhr, status, error) {
-                console.log("❌ AJAX Error:", error);
-                alert("⚠️ Failed to add record!");
+            error: function() {
+                showToast("⚠️ Failed to add record!", "error");
             }
         });
     });
 
-    // ✅ Edit Record (AJAX)
+    // ✅ Save Record (AJAX)
     $(document).on("click", ".save-btn", function() {
-        console.log("➡️ Save button clicked!");
-
         let row = $(this).closest("tr");
         let id = row.attr("data-id");
         let name = row.find("td:eq(0)").text().trim();
@@ -88,80 +99,46 @@ $(document).ready(function() {
         let marks = row.find("td:eq(4)").text().trim();
 
         if (!id) {
-            alert("⚠️ Error: Record ID is missing!");
+            showToast("⚠️ Error: Record ID is missing!", "error");
             return;
         }
 
-        console.log("📤 Sending AJAX request to update /edit_mark/" + id);
         $.ajax({
             url: `/edit_mark/${id}`,
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({ name, subject, year, sem, marks }),
-            success: function(response) {
-                console.log("✅ Record updated successfully!", response);
-                alert("✅ Record updated!");
+            success: function() {
+                showToast("✅ Record updated successfully!");
             },
-            error: function(xhr, status, error) {
-                console.log("❌ AJAX Error:", xhr.responseText);
-                alert("⚠️ Failed to update record!");
+            error: function() {
+                showToast("⚠️ Failed to update record!", "error");
             }
         });
     });
 
     // ✅ Delete Record (AJAX)
     $(document).on("click", ".delete-btn", function() {
-        console.log("➡️ Delete button clicked!");
-
         let row = $(this).closest("tr");
         let id = row.attr("data-id");
 
         if (!id) {
-            row.remove();  // Remove unsaved rows without ID
+            row.remove();
+            showToast("✅ Row removed!");
             return;
         }
 
-        console.log("📤 Sending AJAX request to delete /delete_mark/" + id);
         $.ajax({
             url: `/delete_mark/${id}`,
             method: "DELETE",
-            success: function(response) {
-                console.log("✅ Record deleted successfully!", response);
+            success: function() {
                 row.remove();
-                alert("✅ Record deleted!");
+                showToast("✅ Record deleted!");
             },
-            error: function(xhr, status, error) {
-                console.log("❌ AJAX Error:", xhr.responseText);
-                alert("⚠️ Failed to delete record!");
+            error: function() {
+                showToast("⚠️ Failed to delete record!", "error");
             }
         });
-    });
-
-    let sortAscending = true; // Track sorting direction
-
-    // ✅ Sorting logic
-    $("#sortMarks").click(function() {
-        let rows = $("#marksTable tr").get();
-
-        rows.sort(function(a, b) {
-            let markA = parseInt($(a).find("td:eq(4)").text().trim(), 10) || 0;
-            let markB = parseInt($(b).find("td:eq(4)").text().trim(), 10) || 0;
-
-            return sortAscending ? markA - markB : markB - markA;
-        });
-
-        sortAscending = !sortAscending; // Toggle sort direction
-
-        // ✅ Append sorted rows
-        $.each(rows, function(index, row) {
-            $("#marksTable").append(row);
-        });
-
-        // ✅ Update sorting icon
-        let sortIcon = sortAscending ? "⬍" : "⬏";
-        $("#sortMarks").html(`Marks ${sortIcon}`);
-
-        console.log(`✅ Sorted Marks Column in ${sortAscending ? "Ascending" : "Descending"} Order`);
     });
 
 });
