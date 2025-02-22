@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Ysoft Solutions{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="register-box">
+        <h2>Register</h2>
+        <form id="register-form" method="POST">
+            <div class="input-group">
+                <input type="text" id="name" name="name" placeholder="Full Name" required>
+            </div>
+            <div class="input-group">
+                <input type="email" id="email" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <p class="login-link">Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+    </div>
+</div>
+{% endblock %}
