@@ -3,28 +3,30 @@
 {% block title %}Contact Us - Ysoft Solutions{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Contact Us</h2>
-    <p>If you have any queries, feel free to reach out to us.</p>
+<div class="contact-container">
+    <h2 class="contact-heading">Contact Us</h2>
+    <p class="contact-text">If you have any queries, feel free to reach out to us.</p>
 
-    <form id="contact-form">
-        <div class="input-group">
-            <input type="text" id="name" name="name" placeholder="Your Name" required>
+    <form id="contactForm">
+        <div class="contact-input-group">
+            <input type="text" id="contactName" name="name" placeholder="Your Name" required>
         </div>
-        <div class="input-group">
-            <input type="email" id="email" name="email" placeholder="Your Email" required>
+        <div class="contact-input-group">
+            <input type="email" id="contactEmail" name="email" placeholder="Your Email" required>
         </div>
-        <div class="input-group">
-            <input type="text" id="subject" name="subject" placeholder="Subject" required>
+        <div class="contact-input-group">
+            <input type="text" id="contactSubject" name="subject" placeholder="Subject" required>
         </div>
-        <div class="input-group">
-            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+        <div class="contact-input-group">
+            <textarea id="contactMessage" name="message" placeholder="Your Message" rows="5" required></textarea>
         </div>
-        <button type="submit" class="btn">Send Message</button>
+        <button type="submit" class="contact-btn">Send Message</button>
     </form>
 
-    <p class="info">📍 Address: 123, Tech Street, City, Country</p>
-    <p class="info">📞 Phone: +91 99999 99999</p>
-    <p class="info">📧 Email: support@ysoftsolutions.com</p>
+    <div class="contact-info">
+        <p><strong>📍 Address:</strong> 123, Tech Street, City, Country</p>
+        <p><strong>📞 Phone:</strong> +91 99999 99999</p>
+        <p><strong>📧 Email:</strong> support@ysoftsolutions.com</p>
+    </div>
 </div>
 {% endblock %}

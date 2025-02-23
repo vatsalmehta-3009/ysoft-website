@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Marks Records</h2>
+<h2 class="table-title">Marks Records</h2>
 
 <!-- Add new row button -->
-<button class="btn btn-success" id="addRow">Add New Mark</button>
+<button class="custom-btn add-btn" id="addRow">Add New Mark</button>
 
 <!-- Table to display records -->
-<table class="table table-bordered">
+<table class="custom-table">
     <thead>
         <tr>
             <th>Name</th>
             <th>Subject</th>
             <th>Year</th>
             <th>Semester</th>
-            <th id="sortMarks" style="cursor: pointer;">Marks ⬍</th>  <!-- Clickable for sorting -->
+            <th id="sortMarks" class="sortable">Marks ⬍</th>  <!-- Clickable for sorting -->
             <th>Actions</th>
         </tr>
     </thead>
@@ -27,8 +27,8 @@
             <td contenteditable="true">{{ mark.sem }}</td>
             <td contenteditable="true">{{ mark.marks }}</td>
             <td>
-                <button class="btn btn-primary btn-sm save-btn">Save</button>
-                <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                <button class="custom-btn save-btn">Save</button>
+                <button class="custom-btn delete-btn">Delete</button>
             </td>
         </tr>
         {% endfor %}
