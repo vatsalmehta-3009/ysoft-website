@@ -1,5 +1,5 @@
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
-                   url_for)
+                   session, url_for)
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_url_path='/static')
@@ -53,11 +53,43 @@ with app.app_context():
         db.session.commit()
         print("Dummy data inserted into Marks table")
 
-
 @app.route("/")
 def home():
-    marks_records = Marks.query.all()
-    return render_template("home.html", marks=marks_records)
+    if "user_id" in session:  # Check if user is logged in
+        marks_records = Marks.query.all()
+        return render_template("home.html", marks=marks_records)
+    return redirect(url_for("login"))
+
+# ✅ Login Route
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        data = request.get_json()
+        email = data.get("email")
+        password = data.get("password")
+
+        user = User.query.filter_by(email=email).first()
+
+        if user and user.password == password:  # In production, compare hashed passwords
+            session["user_id"] = user.id
+            return jsonify({"success": True, "message": "Login successful!"})
+
+        return jsonify({"success": False, "error": "Invalid email or password"}), 401
+
+    return render_template("login.html")
+
+
+# ✅ Logout Route
+@app.route("/logout")
+def logout():
+    session.pop("user_id", None)
+    return redirect(url_for("login"))
+
+# @app.route("/")
+# def home():
+#     marks_records = Marks.query.all()
+#     return render_template("home.html", marks=marks_records)
+
 
 
 @app.route("/add_mark", methods=["POST"])
@@ -118,9 +150,9 @@ def delete_mark(id):
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@app.route("/login")
-def login():
-    return render_template("login.html")
+# @app.route("/login")
+# def login():
+#     return render_template("login.html")
 
 @app.route("/about")
 def about():
@@ -136,7 +168,7 @@ def register():
         name = request.form.get("name")
         email = request.form.get("email")
         password = request.form.get("password")
-        
+
         if User.query.filter_by(email=email).first():
             flash("Email already exists!", "danger")
             return redirect(url_for("register"))
