@@ -1,6 +1,8 @@
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    session, url_for)
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -23,8 +25,15 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(255), nullable=False)  # Increased length for hashing
 
+    def set_password_hash(self, password):
+        """Hashes the password and stores it."""
+        self.password = generate_password_hash(password)
+
+    def check_password_hash(self, password):
+        """Verifies the password with the stored hash."""
+        return check_password_hash(self.password, password)
 
 class Marks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,6 +48,7 @@ class Marks(db.Model):
 
 # Create tables
 with app.app_context():
+    db.drop_all()
     db.create_all()
     if not Marks.query.first():
         dummy_data = [
@@ -70,7 +80,7 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        if user and user.password == password:  # In production, compare hashed passwords
+        if user and user.check_password_hash(password):  # Compare hashed password            session["user_id"] = user.id
             session["user_id"] = user.id
             return jsonify({"success": True, "message": "Login successful!"})
 
@@ -174,6 +184,7 @@ def register():
             return redirect(url_for("register"))
 
         new_user = User(name=name, email=email, password=password)
+        new_user.set_password_hash(password)
         db.session.add(new_user)
         db.session.commit()
 
