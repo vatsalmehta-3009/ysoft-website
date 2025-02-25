@@ -1,22 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400&display=swap');
+
 /* Reset default styles */
-body, ul {
+body,
+ul {
     margin: 0;
     padding: 0;
 }
-html, body {
+
+html,
+body {
     height: 100%;
     display: flex;
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
-    overflow: auto; /* Allow scrolling on the entire HTML document */
-    -ms-overflow-style: none; /* For Internet Explorer */
+    overflow: auto;
+    /* Allow scrolling on the entire HTML document */
+    -ms-overflow-style: none;
+    /* For Internet Explorer */
     scrollbar-width: none;
 }
-h1, h2, h3 {
+
+h1,
+h2,
+h3 {
     font-family: 'Poppins', sans-serif;
 }
+
 /* Make navbar fixed at the top */
 header {
     position: fixed;
@@ -71,9 +81,12 @@ nav ul li a {
 
 /* Professional Hover Effect */
 nav ul li a:hover {
-    background: linear-gradient(90deg, #265a96, #4a8bd1); /* Smooth gradient */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Adds depth */
-    transform: scale(1.05); /* Slight pop-up effect */
+    background: linear-gradient(90deg, #265a96, #4a8bd1);
+    /* Smooth gradient */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    /* Adds depth */
+    transform: scale(1.05);
+    /* Slight pop-up effect */
 }
 
 /* Ensure content does not get hidden under navbar */
@@ -96,7 +109,8 @@ footer {
     justify-content: center;
     align-items: center;
     height: 70vh;
-    background: #f4f7fc; /* Light background to match professional theme */
+    background: #f4f7fc;
+    /* Light background to match professional theme */
 }
 
 /* Registration Box */
@@ -172,6 +186,7 @@ footer {
     color: #265a96;
     text-decoration: underline;
 }
+
 /* Center the page content */
 .table-title {
     text-align: center;
@@ -182,7 +197,8 @@ footer {
 
 /* Center the table */
 .custom-table {
-    width: 90%; /* More space than 80% */
+    width: 90%;
+    /* More space than 80% */
     margin: 20px auto;
     border-collapse: collapse;
     background: #fff;
@@ -261,6 +277,13 @@ footer {
     transition: 0.3s;
 }
 
+.add-new-mark-btn {
+    display: block;
+    margin: 10px auto;
+    background: #28a745;
+    color: white;
+}
+
 /* Add Button */
 .add-btn {
     display: block;
@@ -292,6 +315,7 @@ footer {
 .delete-btn:hover {
     background: #c82333;
 }
+
 /* Toast Message Container */
 #toast-container {
     position: fixed;
@@ -339,6 +363,7 @@ footer {
         transform: translateX(100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -355,6 +380,7 @@ footer {
         transform: translateX(0);
         opacity: 1;
     }
+
     to {
         transform: translateX(100%);
         opacity: 0;
