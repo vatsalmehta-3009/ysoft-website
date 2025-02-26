@@ -240,6 +240,45 @@ $(document).ready(function () {
     let sortAscending = true; // Track sorting direction
 
     // ✅ Sorting logic
+    let sortDirections = {}; // Store sorting direction for each column
+
+    $(".sortable").click(function () {
+        let columnIndex = $(this).index(); // Get the index of the clicked column
+        let isNumeric = columnIndex >= 2 && columnIndex <= 4; // Check if column is numeric (Year, Semester, Marks)
+
+        // Toggle sorting direction for the clicked column
+        sortDirections[columnIndex] = !sortDirections[columnIndex];
+
+        let rows = $("#marksTable tr").get();
+
+        rows.sort(function (a, b) {
+            let cellA = $(a).find(`td:eq(${columnIndex})`).text().trim();
+            let cellB = $(b).find(`td:eq(${columnIndex})`).text().trim();
+
+            if (isNumeric) {
+                return sortDirections[columnIndex] ? cellA - cellB : cellB - cellA;
+            } else {
+                return sortDirections[columnIndex]
+                    ? cellA.localeCompare(cellB)
+                    : cellB.localeCompare(cellA);
+            }
+        });
+
+        // Update sorting icon
+        $(".sortable").each(function () {
+            $(this).html($(this).text().replace(/⬍|⬏/, "⬍")); // Reset icons
+        });
+
+        let sortIcon = sortDirections[columnIndex] ? "⬏" : "⬍";
+        $(this).html($(this).text().replace("⬍", sortIcon));
+
+        // Append sorted rows
+        $.each(rows, function (index, row) {
+            $("#marksTable").append(row);
+        });
+    });
+
+
     $("#sortMarks").click(function () {
         let rows = $("#marksTable tr").get();
 
