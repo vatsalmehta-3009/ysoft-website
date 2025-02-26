@@ -1,6 +1,50 @@
 $(document).ready(function () {
     console.log("✅ script.js is loaded!");
 
+    // >>>>  PAGINATION START
+    let rowsPerPage = parseInt($("#rowsPerPage").val()); // Default rows per page
+    let currentPage = 1;
+    let totalRows = $("#marksTable tr").length;
+    let totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    function showPage(page) {
+        let start = (page - 1) * rowsPerPage;
+        let end = start + rowsPerPage;
+
+        $("#marksTable tr").hide().slice(start, end).show();
+        $("#pageInfo").text(`Page ${page} of ${totalPages}`);
+
+        $("#prevPage").prop("disabled", page === 1);
+        $("#nextPage").prop("disabled", page === totalPages);
+    }
+
+    $("#prevPage").click(function () {
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+        }
+    });
+
+    $("#nextPage").click(function () {
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+        }
+    });
+
+    // Change number of rows per page dynamically
+    $("#rowsPerPage").change(function () {
+        rowsPerPage = parseInt($(this).val());
+        totalPages = Math.ceil(totalRows / rowsPerPage);
+        currentPage = 1; // Reset to first page after changing
+        showPage(currentPage);
+    });
+
+    showPage(currentPage); // Show the first page initially
+
+    // >>>>  PAGINATION END
+
+
     // Function to show toast messages
     function showToast(message, type = "success") {
         let toast = $(`

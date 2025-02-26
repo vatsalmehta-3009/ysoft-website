@@ -603,3 +603,50 @@ footer {
 .edit-btn:hover {
     background: #265a96;
 }
+
+/* Pagination Container */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+/* Select Dropdown Styling */
+#rowsPerPage {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #3674B5;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Pagination Controls */
+.pagination {
+    display: flex;
+    align-items: center;
+}
+
+.pagination-btn {
+    background: #3674B5;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pagination-btn:hover {
+    background: #265a96;
+}
+
+.pagination-btn:disabled {
+    background: gray;
+    cursor: not-allowed;
+}

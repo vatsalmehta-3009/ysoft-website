@@ -45,32 +45,53 @@
 
 
 <!-- Table to display records -->
-<table class="custom-table">
-    <thead>
-        <tr>
-            <th id="sortName" class="sortable">Name ⬍</th>
-            <th id="sortSubject" class="sortable">Subject ⬍</th>
-            <th id="sortYear" class="sortable">Year ⬍</th>
-            <th id="sortSemester" class="sortable">Semester ⬍</th>
-            <th id="sortMarks" class="sortable">Marks ⬍</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody id="marksTable">
-        {% for mark in marks %}
-        <tr data-id="{{ mark.id }}">
-            <td contenteditable="true">{{ mark.name }}</td>
-            <td contenteditable="true">{{ mark.subject }}</td>
-            <td contenteditable="true">{{ mark.year }}</td>
-            <td contenteditable="true">{{ mark.sem }}</td>
-            <td contenteditable="true">{{ mark.marks }}</td>
-            <td>
-                <button class="custom-btn edit-btn">Edit</button>
-                <button class="custom-btn delete-btn">Delete</button>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="table-container">
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th id="sortName" class="sortable">Name ⬍</th>
+                <th id="sortSubject" class="sortable">Subject ⬍</th>
+                <th id="sortYear" class="sortable">Year ⬍</th>
+                <th id="sortSemester" class="sortable">Semester ⬍</th>
+                <th id="sortMarks" class="sortable">Marks ⬍</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="marksTable">
+            {% for mark in marks %}
+            <tr data-id="{{ mark.id }}">
+                <td>{{ mark.name }}</td>
+                <td>{{ mark.subject }}</td>
+                <td>{{ mark.year }}</td>
+                <td>{{ mark.sem }}</td>
+                <td>{{ mark.marks }}</td>
+                <td>
+                    <button class="custom-btn edit-btn">Edit</button>
+                    <button class="custom-btn delete-btn">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination Controls -->
+<!-- Pagination Controls -->
+<div class="pagination-container">
+    <label for="rowsPerPage">Rows per page:</label>
+    <select id="rowsPerPage">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+    </select>
+
+    <div class="pagination">
+        <button id="prevPage" class="pagination-btn">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage" class="pagination-btn">Next</button>
+    </div>
+</div>
+
 
 {% endblock %}
