@@ -64,6 +64,20 @@ $(document).ready(function () {
     $("#addRow").click(function () {
         console.log("➡️ Add New Mark button clicked");
 
+        // Check if there's already an empty row
+        let existingEmptyRow = $("#marksTable tr").filter(function () {
+            return $(this).find("td:eq(0)").text().trim() === "" &&
+                $(this).find("td:eq(1)").text().trim() === "" &&
+                $(this).find("td:eq(2)").text().trim() === "" &&
+                $(this).find("td:eq(3)").text().trim() === "" &&
+                $(this).find("td:eq(4)").text().trim() === "";
+        });
+
+        if (existingEmptyRow.length > 0) {
+            showToast("⚠️ You already have an empty row!", "error");
+            return;
+        }
+
         let newRow = `<tr>
             <td contenteditable="true"></td>
             <td contenteditable="true"></td>
