@@ -14,6 +14,35 @@
     </div>
 </div>
 
+<!-- Edit Record Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>Edit Record</h3>
+        <label for="editName">Name:</label>
+        <input type="text" id="editName">
+
+        <label for="editSubject">Subject:</label>
+        <input type="text" id="editSubject">
+
+        <label for="editYear">Year:</label>
+        <input type="number" id="editYear">
+
+        <label for="editSem">Semester:</label>
+        <input type="number" id="editSem">
+
+        <label for="editMarks">Marks:</label>
+        <input type="number" id="editMarks">
+
+        <input type="hidden" id="editRecordId"> <!-- Hidden field to store record ID -->
+
+        <div class="modal-buttons">
+            <button id="saveEdit" class="custom-btn">Save</button>
+            <button id="cancelEdit" class="custom-btn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- Table to display records -->
 <table class="custom-table">
@@ -36,7 +65,7 @@
             <td contenteditable="true">{{ mark.sem }}</td>
             <td contenteditable="true">{{ mark.marks }}</td>
             <td>
-                <button class="custom-btn save-btn">Save</button>
+                <button class="custom-btn edit-btn">Edit</button>
                 <button class="custom-btn delete-btn">Delete</button>
             </td>
         </tr>

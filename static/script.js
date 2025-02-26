@@ -130,16 +130,37 @@ $(document).ready(function () {
     });
 
     // ✅ Edit Record (AJAX)
-    $(document).on("click", ".save-btn", function () {
-        console.log("➡️ Save button clicked!");
+    let editRow = null; // Store the row being edited
 
-        let row = $(this).closest("tr");
-        let id = row.attr("data-id");
-        let name = row.find("td:eq(0)").text().trim();
-        let subject = row.find("td:eq(1)").text().trim();
-        let year = row.find("td:eq(2)").text().trim();
-        let sem = row.find("td:eq(3)").text().trim();
-        let marks = row.find("td:eq(4)").text().trim();
+    // Handle "Edit" button click
+    $(document).on("click", ".edit-btn", function () {
+        editRow = $(this).closest("tr");
+        let id = editRow.attr("data-id");
+        let name = editRow.find("td:eq(0)").text().trim();
+        let subject = editRow.find("td:eq(1)").text().trim();
+        let year = editRow.find("td:eq(2)").text().trim();
+        let sem = editRow.find("td:eq(3)").text().trim();
+        let marks = editRow.find("td:eq(4)").text().trim();
+
+        // Pre-fill modal fields
+        $("#editRecordId").val(id);
+        $("#editName").val(name);
+        $("#editSubject").val(subject);
+        $("#editYear").val(year);
+        $("#editSem").val(sem);
+        $("#editMarks").val(marks);
+
+        $("#editModal").fadeIn(); // Show the modal
+    });
+
+    // Handle "Save" button inside the modal
+    $("#saveEdit").click(function () {
+        let id = $("#editRecordId").val();
+        let name = $("#editName").val().trim();
+        let subject = $("#editSubject").val().trim();
+        let year = $("#editYear").val().trim();
+        let sem = $("#editSem").val().trim();
+        let marks = $("#editMarks").val().trim();
 
         if (!id) {
             showToast("⚠️ Error: Record ID is missing!", "error");
@@ -154,12 +175,26 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("✅ Record updated successfully!", response);
                 showToast("✅ Record updated!");
+
+                // Update the table row with new values
+                editRow.find("td:eq(0)").text(name);
+                editRow.find("td:eq(1)").text(subject);
+                editRow.find("td:eq(2)").text(year);
+                editRow.find("td:eq(3)").text(sem);
+                editRow.find("td:eq(4)").text(marks);
+
+                $("#editModal").fadeOut(); // Close the modal
             },
             error: function (xhr, status, error) {
                 console.log("❌ AJAX Error:", xhr.responseText);
-                showToast("⚠️ Failed to update record!");
+                showToast("⚠️ Failed to update record!", "error");
             }
         });
+    });
+
+    // Handle "Cancel" button inside the modal
+    $("#cancelEdit").click(function () {
+        $("#editModal").fadeOut(); // Hide the modal
     });
 
     // ✅ Delete Record (AJAX)

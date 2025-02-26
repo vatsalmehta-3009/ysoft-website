@@ -492,3 +492,114 @@ footer {
     background-color: gray;
     color: white;
 }
+
+/* Centered Edit Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    width: 350px;
+    max-width: 90%;
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Modal Content */
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Modal Heading */
+.modal h3 {
+    color: #2C3E50;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Labels for Inputs */
+.modal label {
+    display: block;
+    font-weight: bold;
+    color: #2C3E50;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Input Fields */
+.modal input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #3674B5;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    background: #f4f7fc;
+}
+
+.modal input:focus {
+    border-color: #265a96;
+    box-shadow: 0px 0px 8px rgba(38, 90, 150, 0.3);
+}
+
+/* Modal Buttons */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.modal-buttons button {
+    padding: 10px 16px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: all 0.3s;
+    font-size: 16px;
+    width: 48%;
+}
+
+#saveEdit {
+    background: #28a745;
+    color: white;
+}
+
+#saveEdit:hover {
+    background: #218838;
+}
+
+#cancelEdit {
+    background: gray;
+    color: white;
+}
+
+#cancelEdit:hover {
+    background: #5a6268;
+}
+
+/* Edit Button */
+.edit-btn {
+    background: #3674B5;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.edit-btn:hover {
+    background: #265a96;
+}
