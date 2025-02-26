@@ -38,7 +38,7 @@ $(document).ready(function () {
             },
             error: function (xhr) {
                 console.log("❌ Login failed:", xhr.responseText);
-                alert("⚠️ Incorrect email or password. Please try again.");
+                showToast("⚠️ Incorrect email or password. Please try again.");
             }
         });
     });
@@ -55,7 +55,7 @@ $(document).ready(function () {
                 window.location.href = "/login";
             },
             error: function () {
-                alert("Registration failed. Try again.");
+                showToast("Registration failed. Try again.");
             }
         });
     });
@@ -106,11 +106,11 @@ $(document).ready(function () {
                 row.find(".add-btn").removeClass("add-btn btn-success")
                     .addClass("save-btn btn-primary")
                     .text("Save");
-                alert("✅ Record added successfully!");
+                showToast("✅ Record added successfully!");
             },
             error: function (xhr, status, error) {
                 console.log("❌ AJAX Error:", error);
-                alert("⚠️ Failed to add record!");
+                showToast("⚠️ Failed to add record!");
             }
         });
     });
@@ -139,41 +139,53 @@ $(document).ready(function () {
             data: JSON.stringify({ name, subject, year, sem, marks }),
             success: function (response) {
                 console.log("✅ Record updated successfully!", response);
-                alert("✅ Record updated!");
+                showToast("✅ Record updated!");
             },
             error: function (xhr, status, error) {
                 console.log("❌ AJAX Error:", xhr.responseText);
-                alert("⚠️ Failed to update record!");
+                showToast("⚠️ Failed to update record!");
             }
         });
     });
 
     // ✅ Delete Record (AJAX)
+    let deleteRow = null;
+
     $(document).on("click", ".delete-btn", function () {
-        console.log("➡️ Delete button clicked!");
+        deleteRow = $(this).closest("tr"); // Store the row to be deleted
+        $("#deleteConfirmModal").fadeIn(); // Show the modal
+    });
 
-        let row = $(this).closest("tr");
-        let id = row.attr("data-id");
+    // Confirm Delete
+    $("#confirmDelete").click(function () {
+        if (deleteRow) {
+            let id = deleteRow.attr("data-id");
 
-        if (!id) {
-            row.remove();
-            showToast("✅ Row removed!");
-            return;
-        }
-
-        $.ajax({
-            url: `/delete_mark/${id}`,
-            method: "DELETE",
-            success: function (response) {
-                console.log("✅ Record deleted successfully!", response);
-                row.remove();
-                showToast("✅ Record deleted!");
-            },
-            error: function (xhr, status, error) {
-                console.log("❌ AJAX Error:", xhr.responseText);
-                alert("⚠️ Failed to delete record!");
+            if (!id) {
+                deleteRow.remove();
+                showToast("✅ Row removed!");
+            } else {
+                $.ajax({
+                    url: `/delete_mark/${id}`,
+                    method: "DELETE",
+                    success: function (response) {
+                        console.log("✅ Record deleted successfully!", response);
+                        deleteRow.remove();
+                        showToast("✅ Record deleted!");
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("❌ AJAX Error:", xhr.responseText);
+                        showToast("⚠️ Failed to delete record!", "error");
+                    }
+                });
             }
-        });
+        }
+        $("#deleteConfirmModal").fadeOut(); // Hide the modal
+    });
+
+    // Cancel Delete
+    $("#cancelDelete").click(function () {
+        $("#deleteConfirmModal").fadeOut(); // Hide the modal
     });
 
     let sortAscending = true; // Track sorting direction
