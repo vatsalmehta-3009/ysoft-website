@@ -101,6 +101,7 @@ footer {
     color: white;
     text-align: center;
     padding: 10px;
+    margin-top:10px;
 }
 
 /* Center Registration Box */
@@ -275,6 +276,11 @@ footer {
     font-weight: bold;
     border-radius: 6px;
     transition: 0.3s;
+}
+.delete-button-modal{
+    display: flex;
+    justify-content: center;
+    gap:10px;
 }
 
 .add-new-mark-btn {
@@ -459,29 +465,6 @@ footer {
     margin: 5px 0;
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px gray;
-}
-
-.modal-content {
-    text-align: center;
-}
-
-.modal button {
-    margin: 10px;
-    padding: 8px 16px;
-    border: none;
-    cursor: pointer;
-}
 
 #confirmDelete {
     background-color: red;
@@ -654,7 +637,7 @@ footer {
 .search-container {
     margin-bottom: 20px;
     /* Spacing below the search box */
-    padding: 20px 160px 20px 20px;
+    padding: 15px 79px 0px 53px;
     /* Further increased right padding (8x) to shift left */
     display: flex;
     align-items: center;
@@ -678,4 +661,93 @@ footer {
     border: 1px solid #ccc;
     border-radius: 8px;
     /* Softer rounded corners */
+}
+
+/*add modal*/
+/* Modal Styles */
+.add-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.add-modal-content {
+    background-color: #f9f9f9;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 60%;
+    max-width: 500px;
+}
+
+.add-modal-content h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.add-modal-content label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.add-modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.add-modal-buttons {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.add-modal-buttons button {
+    margin-left: 10px;
+}
+#submitAddMark{
+    background-color: #285a96;
+    color: white;
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001;
+}
+
+.toast-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 250px;
+}
+
+.toast-message.error {
+    background-color: #f44336;
+}
+
+.close-toast {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
 }

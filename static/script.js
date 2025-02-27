@@ -44,7 +44,6 @@ $(document).ready(function () {
 
     // >>>>  PAGINATION END
 
-
     // Function to show toast messages
     function showToast(message, type = "success") {
         let toast = $(`
@@ -64,6 +63,79 @@ $(document).ready(function () {
             toast.fadeOut(400, function () { $(this).remove(); });
         });
     }
+
+    // ✅ Show Add Mark Modal
+    $("#showAddModal").click(function() {
+        // Clear any previous values
+        $("#addName").val('');
+        $("#addSubject").val('');
+        $("#addYear").val('');
+        $("#addSem").val('');
+        $("#addMarks").val('');
+        
+        // Show the modal
+        $("#addMarkModal").fadeIn();
+    });
+
+    // ✅ Cancel Add Mark
+    $("#cancelAddMark").click(function() {
+        $("#addMarkModal").fadeOut();
+    });
+
+    // ✅ Handle Add Mark Submission
+    $("#submitAddMark").click(function() {
+        // Get values from the form
+        let name = $("#addName").val().trim();
+        let subject = $("#addSubject").val().trim();
+        let year = $("#addYear").val().trim();
+        let sem = $("#addSem").val().trim();
+        let marks = $("#addMarks").val().trim();
+
+        // Validate inputs
+        if (!name || !subject || !year || !sem || !marks) {
+            showToast("⚠️ Please fill all fields!", "error");
+            return;
+        }
+
+        // Submit data to server
+        $.ajax({
+            url: "/add_mark",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ name, subject, year, sem, marks }),
+            success: function(response) {
+                console.log("✅ Record added successfully!", response);
+                
+                // Create a new row in the table
+                let newRow = `<tr data-id="${response.id}">
+                    <td>${name}</td>
+                    <td>${subject}</td>
+                    <td>${year}</td>
+                    <td>${sem}</td>
+                    <td>${marks}</td>
+                    <td>
+                        <button class="custom-btn edit-btn">Edit</button>
+                        <button class="custom-btn delete-btn">Delete</button>
+                    </td>
+                </tr>`;
+                
+                $("#marksTable").append(newRow);
+                
+                // Update pagination as we've added a new row
+                totalRows = $("#marksTable tr").length;
+                totalPages = Math.ceil(totalRows / rowsPerPage);
+                showPage(currentPage);
+                
+                // Close the modal and show success message
+                $("#addMarkModal").fadeOut();
+                showToast("✅ Record added successfully!");
+            },
+            error: function(xhr, status, error) {
+                console.log("❌ AJAX Error:", error);
+                showToast("⚠️ Failed to add record!", "error");
+            }
+        });
+    });
 
     $("#login-form").submit(function (event) {
         event.preventDefault();
@@ -104,98 +176,32 @@ $(document).ready(function () {
         });
     });
 
-    // ✅ Debugging "Add New Mark" button
-    $("#addRow").click(function () {
-        console.log("➡️ Add New Mark button clicked");
-
-        // Check if there's already an empty row
-        let existingEmptyRow = $("#marksTable tr").filter(function () {
-            return $(this).find("td:eq(0)").text().trim() === "" &&
-                $(this).find("td:eq(1)").text().trim() === "" &&
-                $(this).find("td:eq(2)").text().trim() === "" &&
-                $(this).find("td:eq(3)").text().trim() === "" &&
-                $(this).find("td:eq(4)").text().trim() === "";
-        });
-
-        if (existingEmptyRow.length > 0) {
-            showToast("⚠️ You already have an empty row!", "error");
-            return;
-        }
-
-        let newRow = `<tr>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td>
-                <button class="custom-btn add-btn">Add</button>
-                <button class="custom-btn delete-btn">Delete</button>
-            </td>
-        </tr>`;
-
-        $("#marksTable").append(newRow);
-    });
-
-    // ✅ Handle "Add" button click inside the new row
-    $(document).on("click", ".add-btn", function () {
-        console.log("➡️ Add button clicked inside table row!");
-
-        let row = $(this).closest("tr");
-        let name = row.find("td:eq(0)").text().trim();
-        let subject = row.find("td:eq(1)").text().trim();
-        let year = row.find("td:eq(2)").text().trim();
-        let sem = row.find("td:eq(3)").text().trim();
-        let marks = row.find("td:eq(4)").text().trim();
-
-        if (!name || !subject || !year || !sem || !marks) {
-            showToast("⚠️ Please fill all fields for adding records!", "error");
-            return;
-        }
-
-        $.ajax({
-            url: "/add_mark",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ name, subject, year, sem, marks }),
-            success: function (response) {
-                console.log("✅ Record added successfully!", response);
-                row.attr("data-id", response.id);
-                row.find(".add-btn").removeClass("add-btn btn-success")
-                    .addClass("save-btn btn-primary")
-                    .text("Save");
-                showToast("✅ Record added successfully!");
-            },
-            error: function (xhr, status, error) {
-                console.log("❌ AJAX Error:", error);
-                showToast("⚠️ Failed to add record!");
-            }
-        });
-    });
-
     // ✅ Edit Record (AJAX)
     let editRow = null; // Store the row being edited
 
     // Handle "Edit" button click
-    $(document).on("click", ".edit-btn", function () {
-        editRow = $(this).closest("tr");
-        let id = editRow.attr("data-id");
-        let name = editRow.find("td:eq(0)").text().trim();
-        let subject = editRow.find("td:eq(1)").text().trim();
-        let year = editRow.find("td:eq(2)").text().trim();
-        let sem = editRow.find("td:eq(3)").text().trim();
-        let marks = editRow.find("td:eq(4)").text().trim();
+    // Handle "Edit" button click
+$(document).on("click", ".edit-btn", function () {
+    editRow = $(this).closest("tr");
 
-        // Pre-fill modal fields
-        $("#editRecordId").val(id);
-        $("#editName").val(name);
-        $("#editSubject").val(subject);
-        $("#editYear").val(year);
-        $("#editSem").val(sem);
-        $("#editMarks").val(marks);
+    let id = editRow.attr("data-id") || ""; // Handle null values
+    let name = editRow.find("td:eq(0)").text().trim() || "";
+    let subject = editRow.find("td:eq(1)").text().trim() || "";
+    let year = editRow.find("td:eq(2)").text().trim() || "";
+    let sem = editRow.find("td:eq(3)").text().trim() || "";
+    let marks = editRow.find("td:eq(4)").text().trim() || "";
 
-        $("#editModal").fadeIn(); // Show the modal
-    });
+    // Pre-fill modal fields with safe values
+    $("#editRecordId").val(id);
+    $("#editName").val(name);
+    $("#editSubject").val(subject);
+    $("#editYear").val(year);
+    $("#editSem").val(sem);
+    $("#editMarks").val(marks);
+
+    $("#editModal").fadeIn(); // Show the modal
+});
+
 
     document.getElementById("searchInput").addEventListener("keyup", function () {
         let filter = this.value.toLowerCase();
@@ -207,7 +213,6 @@ $(document).ready(function () {
         });
     });
 
-
     // Handle "Save" button inside the modal
     $("#saveEdit").click(function () {
         let id = $("#editRecordId").val();
@@ -217,9 +222,9 @@ $(document).ready(function () {
         let sem = $("#editSem").val().trim();
         let marks = $("#editMarks").val().trim();
 
-        if (!id) {
-            showToast("⚠️ Error: Record ID is missing!", "error");
-            return;
+        if (!name || !subject || !year || !sem || !marks) {
+            showToast("⚠️ Fields cannot be empty!", "error");
+            return; // Stop further execution
         }
 
         $.ajax({
@@ -276,6 +281,14 @@ $(document).ready(function () {
                         console.log("✅ Record deleted successfully!", response);
                         deleteRow.remove();
                         showToast("✅ Record deleted!");
+                        
+                        // Update pagination as we've removed a row
+                        totalRows = $("#marksTable tr").length;
+                        totalPages = Math.ceil(totalRows / rowsPerPage);
+                        if (currentPage > totalPages) {
+                            currentPage = totalPages || 1;
+                        }
+                        showPage(currentPage);
                     },
                     error: function (xhr, status, error) {
                         console.log("❌ AJAX Error:", xhr.responseText);
@@ -291,8 +304,6 @@ $(document).ready(function () {
     $("#cancelDelete").click(function () {
         $("#deleteConfirmModal").fadeOut(); // Hide the modal
     });
-
-    let sortAscending = true; // Track sorting direction
 
     // ✅ Sorting logic
     let sortDirections = {}; // Store sorting direction for each column
@@ -331,31 +342,8 @@ $(document).ready(function () {
         $.each(rows, function (index, row) {
             $("#marksTable").append(row);
         });
+        
+        // Maintain current page after sorting
+        showPage(currentPage);
     });
-
-
-    $("#sortMarks").click(function () {
-        let rows = $("#marksTable tr").get();
-
-        rows.sort(function (a, b) {
-            let markA = parseInt($(a).find("td:eq(4)").text().trim(), 10) || 0;
-            let markB = parseInt($(b).find("td:eq(4)").text().trim(), 10) || 0;
-
-            return sortAscending ? markA - markB : markB - markA;
-        });
-
-        sortAscending = !sortAscending; // Toggle sort direction
-
-        // ✅ Append sorted rows
-        $.each(rows, function (index, row) {
-            $("#marksTable").append(row);
-        });
-
-        // ✅ Update sorting icon
-        let sortIcon = sortAscending ? "⬍" : "⬏";
-        $("#sortMarks").html(`Marks ${sortIcon}`);
-
-        console.log(`✅ Sorted Marks Column in ${sortAscending ? "Ascending" : "Descending"} Order`);
-    });
-
 });
