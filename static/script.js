@@ -197,6 +197,17 @@ $(document).ready(function () {
         $("#editModal").fadeIn(); // Show the modal
     });
 
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#marksTable tr");
+
+        rows.forEach(row => {
+            let text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+        });
+    });
+
+
     // Handle "Save" button inside the modal
     $("#saveEdit").click(function () {
         let id = $("#editRecordId").val();

@@ -650,3 +650,32 @@ footer {
     background: gray;
     cursor: not-allowed;
 }
+
+.search-container {
+    margin-bottom: 20px;
+    /* Spacing below the search box */
+    padding: 20px 160px 20px 20px;
+    /* Further increased right padding (8x) to shift left */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* Keeps alignment to the right while shifting */
+    gap: 15px;
+    /* Space between label and input */
+}
+
+.search-label {
+    font-weight: bold;
+    white-space: nowrap;
+    /* Prevents wrapping */
+}
+
+.search-box {
+    padding: 10px;
+    /* Comfortable input padding */
+    width: 280px;
+    /* Slightly wider input box */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    /* Softer rounded corners */
+}
