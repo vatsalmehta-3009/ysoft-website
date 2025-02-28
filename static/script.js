@@ -65,25 +65,25 @@ $(document).ready(function () {
     }
 
     // ✅ Show Add Mark Modal
-    $("#showAddModal").click(function() {
+    $("#showAddModal").click(function () {
         // Clear any previous values
         $("#addName").val('');
         $("#addSubject").val('');
         $("#addYear").val('');
         $("#addSem").val('');
         $("#addMarks").val('');
-        
+
         // Show the modal
         $("#addMarkModal").fadeIn();
     });
 
     // ✅ Cancel Add Mark
-    $("#cancelAddMark").click(function() {
+    $("#cancelAddMark").click(function () {
         $("#addMarkModal").fadeOut();
     });
 
     // ✅ Handle Add Mark Submission
-    $("#submitAddMark").click(function() {
+    $("#submitAddMark").click(function () {
         // Get values from the form
         let name = $("#addName").val().trim();
         let subject = $("#addSubject").val().trim();
@@ -103,9 +103,9 @@ $(document).ready(function () {
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({ name, subject, year, sem, marks }),
-            success: function(response) {
+            success: function (response) {
                 console.log("✅ Record added successfully!", response);
-                
+
                 // Create a new row in the table
                 let newRow = `<tr data-id="${response.id}">
                     <td>${name}</td>
@@ -118,19 +118,19 @@ $(document).ready(function () {
                         <button class="custom-btn delete-btn">Delete</button>
                     </td>
                 </tr>`;
-                
-                $("#marksTable").append(newRow);
-                
+
+                $("#marksTable").prepend(newRow);
+
                 // Update pagination as we've added a new row
                 totalRows = $("#marksTable tr").length;
                 totalPages = Math.ceil(totalRows / rowsPerPage);
                 showPage(currentPage);
-                
+
                 // Close the modal and show success message
                 $("#addMarkModal").fadeOut();
                 showToast("✅ Record added successfully!");
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log("❌ AJAX Error:", error);
                 showToast("⚠️ Failed to add record!", "error");
             }
@@ -181,26 +181,26 @@ $(document).ready(function () {
 
     // Handle "Edit" button click
     // Handle "Edit" button click
-$(document).on("click", ".edit-btn", function () {
-    editRow = $(this).closest("tr");
+    $(document).on("click", ".edit-btn", function () {
+        editRow = $(this).closest("tr");
 
-    let id = editRow.attr("data-id") || ""; // Handle null values
-    let name = editRow.find("td:eq(0)").text().trim() || "";
-    let subject = editRow.find("td:eq(1)").text().trim() || "";
-    let year = editRow.find("td:eq(2)").text().trim() || "";
-    let sem = editRow.find("td:eq(3)").text().trim() || "";
-    let marks = editRow.find("td:eq(4)").text().trim() || "";
+        let id = editRow.attr("data-id") || ""; // Handle null values
+        let name = editRow.find("td:eq(0)").text().trim() || "";
+        let subject = editRow.find("td:eq(1)").text().trim() || "";
+        let year = editRow.find("td:eq(2)").text().trim() || "";
+        let sem = editRow.find("td:eq(3)").text().trim() || "";
+        let marks = editRow.find("td:eq(4)").text().trim() || "";
 
-    // Pre-fill modal fields with safe values
-    $("#editRecordId").val(id);
-    $("#editName").val(name);
-    $("#editSubject").val(subject);
-    $("#editYear").val(year);
-    $("#editSem").val(sem);
-    $("#editMarks").val(marks);
+        // Pre-fill modal fields with safe values
+        $("#editRecordId").val(id);
+        $("#editName").val(name);
+        $("#editSubject").val(subject);
+        $("#editYear").val(year);
+        $("#editSem").val(sem);
+        $("#editMarks").val(marks);
 
-    $("#editModal").fadeIn(); // Show the modal
-});
+        $("#editModal").fadeIn(); // Show the modal
+    });
 
 
     document.getElementById("searchInput").addEventListener("keyup", function () {
@@ -281,7 +281,7 @@ $(document).on("click", ".edit-btn", function () {
                         console.log("✅ Record deleted successfully!", response);
                         deleteRow.remove();
                         showToast("✅ Record deleted!");
-                        
+
                         // Update pagination as we've removed a row
                         totalRows = $("#marksTable tr").length;
                         totalPages = Math.ceil(totalRows / rowsPerPage);
@@ -342,7 +342,7 @@ $(document).on("click", ".edit-btn", function () {
         $.each(rows, function (index, row) {
             $("#marksTable").append(row);
         });
-        
+
         // Maintain current page after sorting
         showPage(currentPage);
     });
