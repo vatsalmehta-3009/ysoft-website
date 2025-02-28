@@ -3,14 +3,42 @@
 {% block content %}
 <h2 class="table-title">Marks Records</h2>
 
-<!-- Add new row button -->
-<button class="custom-btn add-new-mark-btn" id="addRow">Add New Mark</button>
+<!-- Add new mark button -->
+<button class="custom-btn add-new-mark-btn" id="showAddModal">Add New Mark</button>
+
+<!-- Add Mark Modal -->
+<div id="addMarkModal" class="add-modal">
+    <div class="add-modal-content">
+        <h3>Add New Mark</h3>
+        <label for="addName">Name:</label>
+        <input type="text" id="addName" required>
+
+        <label for="addSubject">Subject:</label>
+        <input type="text" id="addSubject" required>
+
+        <label for="addYear">Year:</label>
+        <input type="number" id="addYear" required>
+
+        <label for="addSem">Semester:</label >
+        <input type="number" id="addSem" required>
+
+        <label for="addMarks">Marks:</label>
+        <input type="number" id="addMarks" required>
+
+        <div class="add-modal-buttons">
+            <button id="submitAddMark" class="custom-btn">Add</button>
+            <button id="cancelAddMark" class="custom-btn">Cancel</button>
+        </div>
+    </div>
+</div>
 
 <div id="deleteConfirmModal" class="modal">
     <div class="modal-content">
         <p>Are you sure you want to delete this record?</p>
+        <div class="delete-button-modal">
         <button id="confirmDelete" class="custom-btn">Delete</button>
         <button id="cancelDelete" class="custom-btn">Cancel</button>
+        </div>
     </div>
 </div>
 
@@ -19,19 +47,19 @@
     <div class="modal-content">
         <h3>Edit Record</h3>
         <label for="editName">Name:</label>
-        <input type="text" id="editName">
+        <input type="text" id="editName" required>
 
         <label for="editSubject">Subject:</label>
-        <input type="text" id="editSubject">
+        <input type="text" id="editSubject" required>
 
         <label for="editYear">Year:</label>
-        <input type="number" id="editYear">
+        <input type="number" id="editYear" required>
 
         <label for="editSem">Semester:</label>
-        <input type="number" id="editSem">
+        <input type="number" id="editSem" required>
 
         <label for="editMarks">Marks:</label>
-        <input type="number" id="editMarks">
+        <input type="number" id="editMarks" required>
 
         <input type="hidden" id="editRecordId"> <!-- Hidden field to store record ID -->
 
@@ -81,7 +109,6 @@
 </div>
 
 <!-- Pagination Controls -->
-<!-- Pagination Controls -->
 <div class="pagination-container">
     <label for="rowsPerPage">Rows per page:</label>
     <select id="rowsPerPage">
@@ -98,5 +125,6 @@
     </div>
 </div>
 
+<div id="toast-container"></div>
 
 {% endblock %}
