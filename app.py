@@ -2,17 +2,9 @@ from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    session, url_for)
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from config import SQLALCHEMY_DATABASE_URI, SECRET_KEY
 
 app = Flask(__name__, static_url_path='/static')
-
-server = 'localhost\\SQLEXPRESS'
-database = 'master'
-driver = 'ODBC Driver 17 for SQL Server'  # Ensure this driver is installed
-
-SQLALCHEMY_DATABASE_URI  = f'mssql+pyodbc://@{server}/{database}?driver={driver}&trusted_connection=yes'
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SECRET_KEY = "your_secret_key"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SECRET_KEY"] = SECRET_KEY
