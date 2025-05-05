@@ -1,3 +1,9 @@
+TASKS
+1. sync for in local and on server completely.
+2. resolve requirements.txt issue.
+
+
+
 1. Upload project on git
 2. Setup Dbeaver sqlserver connection
 
