@@ -3,8 +3,10 @@ from flask import (Flask, flash, jsonify, redirect, render_template, request,
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import SQLALCHEMY_DATABASE_URI, SECRET_KEY
+from flask_cors import CORS
 
 app = Flask(__name__, static_url_path='/static')
+CORS(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SECRET_KEY"] = SECRET_KEY
@@ -54,7 +56,7 @@ with app.app_context():
         db.session.commit()
         print("Dummy data inserted into Marks table")
 
-@app.route("/")
+@app.route("/home")
 def home():
     if "user_id" in session:  # Check if user is logged in
         marks_records = Marks.query.all()

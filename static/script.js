@@ -99,7 +99,7 @@ $(document).ready(function () {
 
         // Submit data to server
         $.ajax({
-            url: "/add_mark",
+            url: "http://eas.lahmy.com/add_mark",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({ name, subject, year, sem, marks }),
@@ -144,13 +144,13 @@ $(document).ready(function () {
         let password = $("#password").val().trim();
 
         $.ajax({
-            url: "/login",
+            url: "http://eas.lahmy.com/login",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({ email, password }),
             success: function (response) {
                 console.log("✅ Login successful!", response);
-                window.location.href = "/";  // Redirect to home
+                window.location.href = "/home";  // Redirect to home
             },
             error: function (xhr) {
                 console.log("❌ Login failed:", xhr.responseText);
@@ -164,7 +164,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         $.ajax({
-            url: "/register",
+            url: "http://eas.lahmy.com/register",
             type: "POST",
             data: $(this).serialize(),
             success: function (response) {
@@ -228,7 +228,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: `/edit_mark/${id}`,
+            url: `http://eas.lahmy.com/edit_mark/${id}`,
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({ name, subject, year, sem, marks }),
@@ -275,7 +275,7 @@ $(document).ready(function () {
                 showToast("✅ Row removed!");
             } else {
                 $.ajax({
-                    url: `/delete_mark/${id}`,
+                    url: `http://eas.lahmy.com/delete_mark/${id}`,
                     method: "DELETE",
                     success: function (response) {
                         console.log("✅ Record deleted successfully!", response);

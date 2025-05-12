@@ -2,12 +2,12 @@ import urllib
 from sqlalchemy.engine.url import URL
 
 DB_CONFIG = {
-    'drivername': 'mssql+pymssql',
-    'username': 'db_9eb5dd_zor_admin',
-    'password': 'Zor@1234',
-    'host': 'SQL5088.site4now.net',
-    'port': 1433,
-    'database': 'db_9eb5dd_zor'
+    'drivername': 'mysql+pymysql',
+    'username': 'vatsal3',  # Replace with your MySQL username
+    'password': 'Vatsalmehta123',  # Replace with your MySQL password
+    'host': '127.0.0.1',  # Use 'localhost' or '127.0.0.1' for GoDaddy MySQL connection
+    'port': 3306,  # MySQL default port
+    'database': 'master_lahmy'  # Your MySQL database name
 }
 
 SQLALCHEMY_DATABASE_URI = URL.create(**DB_CONFIG)
